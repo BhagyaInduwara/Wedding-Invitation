@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   TAILWIND v4 THEME
+   next/font injects --nf-* variables on <html>.
+   We reference them here without circular self-references.
+───────────────────────────────────────────────────────────── */
+@theme {
+  --font-playfair:  var(--nf-playfair),  "Playfair Display", Georgia, serif;
+  --font-cormorant: var(--nf-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-cinzel:    var(--nf-cinzel),    "Cinzel", Georgia, serif;
+  --font-dancing:   var(--nf-dancing),   "Dancing Script", cursive;
+
+  /* Gold scale */
+  --color-gold-50:  #fffdf5;
+  --color-gold-100: #fff8e8;
+  --color-gold-200: #fde8b8;
+  --color-gold-300: #f5d778;
+  --color-gold-400: #e8c060;
+  --color-gold-500: #c8860a;
+  --color-gold-600: #a06820;
+  --color-gold-700: #7a4f00;
+  --color-gold-800: #5a3200;
+  --color-gold-900: #3a1f00;
+
+  /* Crimson/rose */
+  --color-rose-deep:   #7a1800;
+  --color-rose-mid:    #a82020;
+  --color-rose-bright: #c0392b;
+
+  /* Animations */
+  --animate-cloud-drift: cloudDrift 12s  ease-in-out infinite;
+  --animate-petal-fall:  petalFall  9s   linear      infinite;
+  --animate-spark:       sparkAnim  2.5s ease-in-out infinite;
+  --animate-king-float:  kingFloat  4s   ease-in-out infinite;
+  --animate-dot-pulse:   dotPulse   3s   ease-in-out infinite;
+  --animate-ray-rotate:  rayRotate  24s  linear      infinite;
+  --animate-shimmer:     shimmer    5s   linear      infinite;
+  --animate-fade-up:     fadeUp     0.9s ease         both;
+  --animate-pulse-ring:  pulseRing  2.5s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────────────────────────── */
+@keyframes cloudDrift {
+  0%   { transform: translateX(-12px) translateY(0) scale(1);      }
+  50%  { transform: translateX(12px)  translateY(-14px) scale(1.05); }
+  100% { transform: translateX(-12px) translateY(0) scale(1);      }
+}
+@keyframes petalFall {
+  0%   { transform: translateY(-30px) rotate(0deg)   translateX(0);   opacity: 0;   }
+  10%  { opacity: 0.85; }
+  85%  { opacity: 0.6;  }
+  100% { transform: translateY(110vh) rotate(560deg) translateX(60px); opacity: 0; }
+}
+@keyframes sparkAnim {
+  0%, 100% { opacity: 0;   transform: scale(0.4); }
+  50%       { opacity: 1;   transform: scale(1.5); }
+}
+@keyframes kingFloat {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-9px); }
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(200,134,10,0.45); }
+  50%       { box-shadow: 0 0 38px rgba(200,134,10,0.80); }
+}
+@keyframes rayRotate {
+  from { transform: translate(-50%,-50%) rotate(0deg);   }
+  to   { transform: translate(-50%,-50%) rotate(360deg); }
+}
+@keyframes shimmer {
+  0%   { background-position: 0%   50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes pulseRing {
+  0%, 100% { opacity: 0.4; transform: scale(1);    }
+  50%       { opacity: 0.9; transform: scale(1.06); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE
+───────────────────────────────────────────────────────────── */
+:root { scroll-behavior: smooth; }
+
+html  { overflow-x: hidden; }
+
+body {
+  font-family:      var(--font-cormorant), Georgia, serif;
+  background-color: #0d0500;
+  color:            #fdf8ee;
+  overflow-x:       hidden;
+  line-height:      1.6;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SHARED UTILITIES
+───────────────────────────────────────────────────────────── */
+
+/* Shimmer gradient text */
+.shimmer-text {
+  background:             linear-gradient(90deg, #7a1800, #c8860a, #f5d778, #c8860a, #7a1800);
+  background-size:        200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:        text;
+  animation:              shimmer 5s linear infinite;
+}
+
+/* Scroll-reveal */
+.reveal {
+  opacity:    0;
+  transform:  translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.visible {
+  opacity:   1;
+  transform: translateY(0);
+}
+
+/* Section wrapper — dark warm bg + subtle mandala */
+.section-base {
+  position:   relative;
+  overflow:   hidden;
+  background: #0d0500;
+}
+
+/* Mandala overlay (applied via inline style for bg-image) */
+.section-mandala {
+  position:            absolute;
+  inset:               0;
+  background-size:     cover;
+  background-position: center;
+  opacity:             0.12;
+  z-index:             0;
+}
+
+/* Warm golden vignette inside sections */
+.section-vignette {
+  position:       absolute;
+  inset:          0;
+  background:     radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(10,3,0,0.65) 100%);
+  pointer-events: none;
+  z-index:        1;
+}
+
+/* Glass card */
+.glass-card {
+  background:      rgba(255, 248, 222, 0.10);
+  border:          1px solid rgba(200, 134, 10, 0.35);
+  border-radius:   1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:      transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-card:hover {
+  transform:   translateY(-4px);
+  box-shadow:  0 16px 48px rgba(120, 60, 0, 0.28);
+}
+
+/* Gold top bar on cards */
+.gold-top::before {
+  content:   "";
+  position:  absolute;
+  top:       0;
+  left:      0;
+  right:     0;
+  height:    3px;
+  background: linear-gradient(90deg, transparent, #c8860a, #f5d778, #c8860a, transparent);
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* Elegant section heading */
+.section-heading {
+  font-family:  var(--font-cinzel), "Cinzel", serif;
+  font-size:    clamp(1.3rem, 4.5vw, 2rem);
+  letter-spacing: 0.35em;
+  color:        #f5d778;
+  text-shadow:  0 2px 24px rgba(200, 134, 10, 0.5);
+}
+
+/* Ornate divider */
+.ornate-divider {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             0.9rem;
+  width:           100%;
+  max-width:       260px;
+  margin:          1rem auto;
+}
+.ornate-divider::before,
+.ornate-divider::after {
+  content:    "";
+  flex:       1;
+  height:     1px;
+  background: linear-gradient(90deg, transparent, rgba(200,134,10,0.7), transparent);
+}
+
+/* Section subtitle */
+.section-sub {
+  font-family:    var(--font-cormorant), Georgia, serif;
+  font-size:      1.05rem;
+  font-style:     italic;
+  letter-spacing: 0.12em;
+  color:          rgba(253, 220, 140, 0.75);
+}
+
+/* Info label (inside cards) */
+.info-label {
+  font-family:    var(--font-cinzel), serif;
+  font-size:      0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color:          #c8860a;
+  margin-bottom:  0.45rem;
+}
+
+/* Info value */
+.info-value {
+  font-family: var(--font-playfair), serif;
+  font-size:   1.1rem;
+  font-weight: 600;
+  color:       #fdf8ee;
+  line-height: 1.35;
+}
+
+/* Info sub */
+.info-sub {
+  font-family: var(--font-cormorant), serif;
+  font-size:   0.9rem;
+  font-style:  italic;
+  color:       rgba(253, 220, 140, 0.65);
+  margin-top:  0.25rem;
+}
+
+/* Decorative ornament string */
+.ornament {
+  color:          #c8860a;
+  letter-spacing: 0.42em;
+  font-size:      1rem;
+}
+
+/* Primary CTA button */
+.btn-gold {
+  display:         inline-block;
+  font-family:     var(--font-cinzel), serif;
+  font-size:       0.72rem;
+  letter-spacing:  0.22em;
+  text-transform:  uppercase;
+  color:           #f5d778;
+  background:      linear-gradient(135deg, #7a1800 0%, #a82020 50%, #7a1800 100%);
+  border:          1.5px solid rgba(200,134,10,0.6);
+  border-radius:   6px;
+  padding:         0.9rem 2.2rem;
+  box-shadow:      0 4px 22px rgba(120, 30, 0, 0.45);
+  transition:      transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+}
+.btn-gold:hover {
+  transform:   translateY(-2px);
+  box-shadow:  0 10px 36px rgba(120, 30, 0, 0.65);
+}
